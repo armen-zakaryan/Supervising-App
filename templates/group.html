@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="col-sm-8" >
+      <!-- Email input-->
+      <div class="input-group input-group-sm">
+        <label class="control-label">Group Name</label>
+        <div class="controls">
+          <input placeholder="Group Name" class="form-control input-small" data-bind="value: name, valueUpdate:'afterkeydown' ">
+        </div>
+      </div>     
+      <br/>
+
+      <div class="input-group input-group-sm">
+        <label class="control-label">Search for group member</label>
+        <div class="controls">
+          <input placeholder="Type the User name" class="form-control input-small" data-bind="value: search, valueUpdate:'afterkeydown' ">
+        </div>
+      </div>
+
+
+      <!-- Select members -->
+      <!-- ko if: userList().length -->
+      <div class="input-group input-group-sm">
+        <span class="controls">
+          <select data-bind="options:  userList, optionsText: 'username', optionsValue: 'id', value:selectedUser" class="form-control input-small"></select>
+        </span><button data-bind="click:addUsertoList"> <small>add</small></button>
+
+      </div>
+      <!-- /ko -->
+
+      <!-- Create Button -->
+      <hr>
+      <div class="input-group input-group-sm">
+        <div class="controls">
+          <button  class="btn btn-success " data-bind="visible: allowCreate,click: createGroup"> Create </button>
+          <button onclick="location.href='/'" class="btn btn-warning "> Cancel </button> 
+        </div>
+      </div>
+          
+  </div><!-- end -->
+
+  <!-- ko if: selectedUserList().length -->
+  <div class="col-sm-4 feature">
+    <div class="panel">
+      <div class="panel-heading">
+        Selected group members
+      </div>
+      <div id='selectedUserList'>
+        <table>
+          <thead data-bind="visible:selectedUserList().length"><tr><th>User</th></tr></thead>
+            <tbody data-bind="template:{name:'records-template-userlist',foreach: selectedUserList}">
+            
+            </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+  <!-- /ko -->
+
+
+</div><!-- End Continer -->
+
+
+
+<!--Tamplates-->
+<script type="text/html" id="records-template-userlist">
+<tr>
+  <td id="userTD"><input id="userlistUsernameInput" class="btn btn-default"data-bind="value: username"readonly></td>
+
+  <td><a id="userlistUsernameInputDelete" class="btn btn-danger" data-bind="click: $root.group.removefromUserList"><i class="fa fa-trash-o fa-lg"></i></a></td>
+</tr>
+</script>

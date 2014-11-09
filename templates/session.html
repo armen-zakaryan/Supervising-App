@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4 panel" id="loginpanel">
+        <fieldset class="panel" id='login'>
+            <!-- Form Name -->
+            <legend data-bind="text: option()"> </legend>
+
+            <!-- Text input-->
+            <div class="control-group">
+                <label class="control-label" for="username">Username</label>
+                <div class="controls">
+                    <input id="username" name="username" type="text" placeholder="Username" class="input-small" required="" data-bind="value:username, valueUpdate:'afterkeydown' ">
+                    <p class="help-block" id='usernamehelp' data-bind="visible: usernamehelp()" >Please fiil out this field</p>
+              </div>
+            </div>
+
+            <br/>
+            <!-- Password input-->
+            <div class="control-group">
+              <label class="control-label" for="password">Password</label>
+              <div class="controls">
+                <input id="password" name="password" type="password" placeholder="Password" class="input-small" required="" data-bind="value: password, valueUpdate:'afterkeydown' ">
+                <p class="help-block" id='usernamehelp' data-bind="visible: passwordhelp()">Please fiil out this field</p>  </div>
+            </div>
+
+            <br/>
+            <!-- Button -->
+            <div class="control-group">
+              <label class="control-label" for="singlebutton"></label>
+              <div class="controls">
+                <button id="loginbutton" class="btn btn-success " data-bind="visible: allowLogin,click: authenticate">Login</button>
+              </div>
+            </div>
+
+        </fieldset>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Single Page Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">   
+    <link href="css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
+    
+    <!-- Custom CSS or LESS -->
+    <link href="css/styles.css" rel="stylesheet">
+
+    <script data-main="js/main" src="js/lib/require.js"></script>
+</head>
+<body>
+    <div class="container" id="main">
+        <div class="navbar navbar-fixed-top" id="navbar">
+            <div class="container">            
+                <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+                <button class="navbar-toggle" data-target=".navbar-responsive-collapse" data-toggle="collapse" type="button">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src="img/logo.png" alt="Your Logo"></a>
+                <div class="nav-collapse collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Guest</a></li>
+                        <li class="dropdown">
+                            <a href="#home" class="dropdown-toggle" data-toggle="dropdown"> Create Account <strong class="caret"></strong></a>
+                                
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#profile" data-bind="click:function(){return Boolean(profile.option('User'));}"><span class="glyphicon glyphicon-user"></span> User Account</a>
+                                </li>
+                            </ul><!-- end dropdown-menu -->
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav pull-right">
+                        <li class="dropdown" id="navbarLogin">
+                            <div class="btn-group">
+                                <a class="btn btn-primary"><i class="fa fa-user fa-fw"></i> <span data-bind='text:login.as()'></span></a>
+                                <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="fa fa-caret-down"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <!-- ko if: login.option() === '' -->
+                                        <li>
+                                            <a href="#session" data-bind="click:function(){return Boolean(login.option('User'));}"><span class="glyphicon glyphicon-user"></span> User</a>
+                                        </li>
+                                        <!-- /ko -->
+                                        <!-- ko if: login.option() !== '' -->
+                                        <li id='logout'>
+                                            <a href="/" data-bind="click:login.loguot"><span class="glyphicon glyphicon-off"></span> Logout</a>
+                                        </li>                                
+                                        <!-- /ko -->
+                                    </ul>
+                            </div>                 
+                        </li>
+                    </ul><!-- end nav pull-right -->
+                </div><!-- end nav-collapse -->                
+            </div><!-- end container -->
+        </div><!-- end navbar -->     
+
+        <div class="container" id="body"><!--body-->      
+            <div class="row" id="bigCallout">
+                <div class="col-12">
+                    <div class="well " style="background: rgb(250,250,245);">
+                        <div class="page-header">
+                        <!-- ko if: path() === 'home' -->
+                        <h1 class="text-primary text-center hero-unit"><p class=""> Welcome to Parental Control </p></h1>
+                        <!-- /ko -->
+
+                        <!-- ko if: path().indexOf('admin') === 0 -->
+                        <!-- ko template: { name: 'admin', data: admin } --><!-- /ko -->
+                        <!-- /ko -->
+
+                        <!-- ko if: path() === 'profile' -->
+                        <!-- ko template: { name: 'profile', data: profile  } --><!-- /ko -->
+                        <!-- /ko -->
+
+                        <!-- ko if: path() === 'session' -->
+                        <!-- ko template: { name: 'session', data: login } --><!-- /ko -->
+                        <!-- /ko -->
+
+                        <!-- ko if: path().indexOf('user') === 0 -->
+                        <!-- ko template: { name: 'user' , data: user } --><!-- /ko -->
+                        <!-- /ko -->
+                        
+                        <!-- ko if: path().indexOf('newAccount') === 0 -->
+                        <!-- ko template: { name: 'newAccount' } --><!-- /ko -->
+                        <!-- /ko -->
+
+                        <!-- ko if: path() === '404' -->
+                        <!-- ko template: { name: '404' } --><!-- /ko -->                        
+                        <!-- /ko -->
+
+                        <!-- ko if: path() === '401' -->
+                        <!-- ko template: { name: '401' } --><!-- /ko -->                        
+                        <!-- /ko -->                        
+
+                     </div><!-- end page-header -->
+                    </div><!-- end well -->
+                </div><!-- end col-12 -->
+            </div><!-- end bigCallout -->
+        </div><!--end body container-->
+    </div><!-- end container -->
+          
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                <h6>Copyright &copy; 2014 {name}</h6>
+                </div><!-- end col-sm-2 -->
+                
+                <div class="col-sm-4">
+                    <h6>About Us</h6>
+                    <p></p>
+                </div><!-- end col-sm-4 -->
+                
+                <div class="col-sm-2">
+                    <h6>Navigation</h6>
+                    <ul class="unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Links</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div><!-- end col-sm-2 -->
+                
+                <div class="col-sm-2">
+                    <h6>Follow Us</h6>
+                    <ul class="unstyled">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Google Plus</a></li>
+                    </ul>
+                </div><!-- end col-sm-2 -->
+                
+                <div class="col-sm-2">
+                    <h6>Coded with <span class="glyphicon glyphicon-user"></span> Armen Zakaryan</h6>
+                </div><!-- end col-sm-2 -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+</body>
+</html>
+
+<!--Google map key -->
+<!--https://code.google.com/apis/console/b/0/?noredirect#project:568141553308:access-->

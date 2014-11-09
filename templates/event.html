@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="col-sm-8" >
+    <div class="tabbable" >
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-bind="click: loadMap" ><span class="glyphicon glyphicon-play"></span></a></li>   
+        <li class="active"><a href="#tab1" data-toggle="tab"> Map </a></li>
+        <li><a href="#tab2" data-toggle="tab"> Who do you want to supervise </a></li>
+      </ul>
+      <div class="tab-content" >
+        <div class="tab-pane active" id="tab1">
+          <h4><span class="glyphicon glyphicon-map-marker"></span> Our Location</h4>
+                
+
+                <div id="map-canvas" data-bind="customShowMap : true" ></div>
+
+
+        </div><!-- end tab-pane -->
+
+        <div class="tab-pane" id="tab2">      
+          <hr>        
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-lg-2 control-label"> Name </label>
+              <div class="col-lg-10">
+                <input class="form-control" id="inputName" placeholder=" Event Name " type="text" data-bind="value: eventName, valueUpdate:'afterkeydown' ">
+              </div>
+            </div>                          
+          </form>   
+        </div><!-- end tab-pane -->
+      </div><!-- end tab-content -->
+    </div><!-- end tabbable -->
+
+  </div><!-- end -->
+
+  <div id='addEvent' class="col-sm-4">
+    <div class="row ">
+      <legend><span> <h4> #### </h4>  </span></legend>
+      
+      <!-- Event Type option-->
+      <div class="container">
+        <div class="row">
+          <div class='col-sm-10'>
+            <div class="form-group">
+              <label class="control-label" > Choose Group </label>
+              <div class="controls">
+                <select data-bind="options:userGroups, optionsText: 'groupName', optionsValue: 'groupMembers', value:groupMembers, optionsCaption: 'Choose...' "class="form-control input-small"> 
+                </select>
+              </div>
+              <hr>
+              <!-- ko if: groupMembers -->
+              <label >  Group members are </label>
+              <div class="controls">
+                <select data-bind="options:groupMembers, optionsText: 'username', optionsValue: 'userId', value:selectedUser" class="form-control input-small"> 
+                </select>
+              </div>
+              <hr>
+              <button  class="btn btn-success " data-bind="visible:allowSupervise(), click: getOnlineGroupMembersCoordinates"> Start Supervise </button>          
+              <!-- /ko -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- End Continer -->

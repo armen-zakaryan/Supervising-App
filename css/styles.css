@@ -1,0 +1,128 @@
+html, body
+{
+    height: 100%;
+}
+.navbar-brand{
+	padding: 0px;
+}
+
+#main{
+	min-height: 100%;
+	//background: green;
+}
+
+#navbar{
+	padding:0px;
+}
+#navbarLogin{
+	margin-top: 6px;
+
+}
+
+
+#body{
+	padding-top: 100px;
+}
+
+#id{
+	  text-align: center;
+	color: red;
+	margin:0 auto;
+}
+
+#login, th{
+	text-align: center;
+	color: blue;
+	margin:0 auto;
+}
+#loginpanel{border-color: green;}
+.help-block{
+	color: red;
+}
+
+
+/*User*/
+#selectedUserList{
+	max-height: 220px;
+	border-color: green;
+	overflow-y:scroll;
+}
+::-webkit-scrollbar { 
+    //display: none; 
+}
+
+
+#userTD{
+	width: 50% !important;
+}
+#userlistUsernameInput{
+	padding-top: 4px;
+	background: #ccc;
+	width: 95%;
+	height: 30px;
+}
+#userlistUsernameInputDelete{
+	padding-top: 4px;
+	height: 30px;
+}
+
+/* User account */
+#navbaruserinside{height: 40px;}
+#userActivityWall{min-height:450px;border-color: green;}
+#userwall{padding: 8px 25px;}
+#usernavbar{
+	margin-top: -40px;
+	margin-bottom: -30px;
+	background: rgb(83,154,169);  /* Magic color */
+}
+#usercollapsbutton{
+	background: rgb(83,183,235);
+	margin-top: 15px;
+	margin-right: 28px;
+
+}
+
+#usercollapsa > .open > a, #usercollapsa > .open > a:hover, #usercollapsa > .open > a:focus {
+	color: #555555;
+	background-color: rgb(63,134,149);
+}
+#usercollapsa > li > a{color: white;}
+#usercollapsa > li > a:hover{color: black;}
+#googleMap{width:100%;height:350px;border:1px dotted green;}
+#map-canvas{height:350px;border:1px dotted green;}
+
+
+/* Creating new Account */
+#createAccount{
+	//background: white;
+	//padding-left: 20px;
+	max-width: 300px;
+}
+#createAccauntpanel{border-color: green;}
+
+
+
+
+/* Users Events    */
+.selectedMyOwnEvents{background: rgb(83,154,169);}
+#userOwnEventsList{height: 200px;border-color: green;overflow:scroll;}
+#map-canvas-showTrip{height:250px;border:1px dotted green;}
+
+
+
+footer {
+	background: #333;
+	color: #eee;
+	font-size: 11px;
+	padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+[
+  {
+    "groupName": "MyFistGroup",
+    "groupMembers": [
+      3,
+      4
+    ],
+    "creatorId": 1,
+    "id": 1
+  },
+  {
+    "groupName": "MySecondGroup",
+    "groupMembers": [
+      4,
+      2
+    ],
+    "creatorId": 1,
+    "id": 2
+  },
+  {
+    "groupName": "Group1",
+    "groupMembers": [
+      2,
+      4
+    ],
+    "creatorId": 5,
+    "id": 3
+  }
+]

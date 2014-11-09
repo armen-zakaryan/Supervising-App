@@ -1,0 +1,93 @@
+<div class="tabbable" >
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-bind="click: loadMap" ><span class="glyphicon glyphicon-play"></span></a></li>		
+		<li class="active"><a href="#tab1" data-toggle="tab"> Map </a></li>
+		<li><a href="#tab2" data-toggle="tab"> Add More Information </a></li>
+
+	</ul>
+	<div class="tab-content" >
+		<div class="tab-pane active" id="tab1">
+			<h4><span class="glyphicon glyphicon-map-marker"></span> Our Location <small> New Trip </small></h4>
+        		<div id="map-canvas" ></div>
+
+				<div class="input-group input-group-sm" data-bind="visible: distance.value()">
+				  <span class="input-group-addon">The Distance is</span>
+				  <input type="text" class="form-control" data-bind="value: calcDistacneMetrix" readonly>
+				  <span class="input-group-addon">
+			          <select  data-bind="value: distance.metrix">
+			            <option value="m">m</option>
+			            <option value="km">km</option>
+			            <option value="mile">mile</option>
+			          </select>
+			       </span>  				  	
+				</div>		
+		</div><!-- end tab-pane -->
+
+		<div class="tab-pane" id="tab2">
+			<hr>				
+			<form class="form-horizontal">
+				<div class="form-group">
+					<label class="col-lg-2 control-label"> Name </label>
+					<div class="col-lg-10">
+						<input class="form-control" id="inputName" placeholder=" Event Name " type="text" data-bind="value: eventName, valueUpdate:'afterkeydown' ">
+					</div>
+				</div>													
+				<div class="form-group">
+					<label class="col-lg-2 control-label"> Vehicle  </label>
+					<div class="col-lg-10">
+						<input class="form-control"placeholder=" Car Description " type="email" data-bind="value: carType, valueUpdate:'afterkeydown' ">
+					</div>
+				</div>											
+				<div class="form-group">
+					<label class="col-lg-2 control-label"> Description </label>
+					<div class="col-lg-10">
+						<textarea class="form-control" placeholder=" Event Description " rows="3" data-bind="value: eventDescription, valueUpdate:'afterkeydown' "></textarea>
+					</div>
+				</div>
+			</form>		
+
+			<a href="#userAddEventModal" role="button" class="btn btn-success" data-toggle="modal"> Add More Information </a>
+
+			<div class="modal fade" id="userAddEventModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal">&times;</button>
+												
+							<h4 class="modal-title" style='text-align: center;'> Additional Information</h4>
+						</div><!-- end modal-header -->
+						<div class="modal-body">
+							<hr>				
+							<form class="form-horizontal">
+								<div class="form-group">
+									<label class="col-lg-2 control-label"> Name </label>
+									<div class="col-lg-10">
+										<input class="form-control" id="inputName" placeholder=" Event Name " type="text" data-bind="value: eventName, valueUpdate:'afterkeydown' ">
+									</div>
+								</div>													
+								<div class="form-group">
+									<label class="col-lg-2 control-label"> Vehicle  </label>
+									<div class="col-lg-10">
+										<input class="form-control"placeholder=" Car Description " type="email" data-bind="value: carType, valueUpdate:'afterkeydown' ">
+									</div>
+								</div>											
+								<div class="form-group">
+									<label class="col-lg-2 control-label"> Description </label>
+									<div class="col-lg-10">
+										<textarea class="form-control" placeholder=" Event Description " rows="3" data-bind="value: eventDescription, valueUpdate:'afterkeydown' "></textarea>
+									</div>
+								</div>
+							</form>
+						</div><!-- end modal-body -->		
+						<div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal" data-bind="click: cancelAdditionalInfo" type="button"> Cancel </button> 
+							<button class="btn btn-primary" data-dismiss="modal" type="button">Save changes</button>
+						</div><!-- end modal-footer -->
+					</div><!-- end modal-content -->
+				</div><!-- end modal-dialog -->
+			</div><!-- end userAddEventModal -->
+
+						
+		</div><!-- end tab-pane -->
+	</div><!-- end tab-content -->
+</div><!-- end tabbable -->

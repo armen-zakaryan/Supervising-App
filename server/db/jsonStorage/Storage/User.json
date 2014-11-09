@@ -1,0 +1,56 @@
+[
+  {
+    "username": "u1",
+    "password": 1,
+    "email": "User1@gmail.com",
+    "gender": "man",
+    "id": 1,
+    "groups": [
+      1,
+      2
+    ]
+  },
+  {
+    "username": "user_2",
+    "password": "222",
+    "gender": "male",
+    "email": "User2@gmail.com",
+    "id": 2,
+    "groups": [
+      2,
+      3
+    ]
+  },
+  {
+    "username": "user_3",
+    "password": "3",
+    "gender": "male",
+    "email": "User3@gmail.com",
+    "id": 3,
+    "groups": [
+      1
+    ]
+  },
+  {
+    "username": "user_4",
+    "password": "4",
+    "gender": "female",
+    "email": "User4@gmail.com",
+    "id": 4,
+    "groups": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "username": "User_5",
+    "password": "5",
+    "gender": "male",
+    "email": "@kukjkhkj",
+    "id": 5,
+    "groups": [
+      3
+    ]
+  }
+]
