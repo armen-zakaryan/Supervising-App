@@ -18,8 +18,14 @@ define([], function() {
             });
             return promise;
         },
+
         loguot: function() {
-            authenticationData = undefined;
+            $.ajax({
+                url: baseUrl + '/users/' + authenticationData.user.id,
+                type: "PUT",
+                contentType: 'application/json',
+            });
+            authenticationData = {};
         },
 
         checkUsernameExistance: function(data) {
@@ -75,11 +81,16 @@ define([], function() {
             });
         },
 
-        getOnlineGroupMembersCoordinates: function(memberId) {
-            return $.ajax({
-                url: baseUrl + '/coordinates/' + memberId,
-                type: "GET",
-                contentType: 'json'
+        startSupervise: function(m) {
+            var arr = [];
+            m.forEach(function(el) {
+                arr.push(el.userId);
+            });
+            $.ajax({
+                url: baseUrl + '/users/' + authenticationData.user.id + '/group/',
+                type: "PUT",
+                contentType: 'application/json',
+                data: JSON.stringify(arr)
             });
         },
 

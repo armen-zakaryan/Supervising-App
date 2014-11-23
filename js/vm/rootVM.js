@@ -16,7 +16,7 @@ define(['ko', 'profile', 'session', 'user', 'admin', 'event', 'group'], function
     };
 
     user.onCoordinatesGet = function(coordinates) {
-        event.groupMembersCoordinates(coordinates);
+        events.groupMembersCoordinates(coordinates);
     };
 
     profile.onCreateProfile = function(value) {

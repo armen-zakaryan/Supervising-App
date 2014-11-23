@@ -43,35 +43,28 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
     }
 
     var active = false;
-    //Get coordinates of onlinr users
-    event.getOnlineGroupMembersCoordinates = function() {
+    //set supervising group ID
+    event.startSupervise = function() {
         active = true;
-        event.drowOnMap(event.groupMembersCoordinates);
+        rest_api.startSupervise(event.groupMembers());
     };
 
     event.groupMembersCoordinates.subscribe(function() {
-        active && event.drowOnMap(event.groupMembersCoordinates);
-    })
+        active && event.drawOnMap(event.groupMembersCoordinates());
+    });
 
-    /*
-    function getCoordinates() {
-        event.groupMembers().forEach(function(user) {
-            rest_api.getOnlineGroupMembersCoordinates(user.userId).then(function(Points) {
-                event.drowOnMap(Points);
-            });
-        });
-        if (active) {
-            setTimeout(function() {
-                getCoordinates();
-            }, 10000);
-        }
-    }
-    */
+
+
+
+
+
+
 
     //Load Google Map for Creting New Event
     event.loadMap = function(element) {
         require(['async!http://maps.google.com/maps/api/js?v=3.exp&libraries=drawing'], function() {
             var element = element || document.getElementById('map-canvas');
+            var markers = [];
             var geocoder = new google.maps.Geocoder();
             var directionsService = new google.maps.DirectionsService();
             var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -85,13 +78,38 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
                 }
             });
 
-            event.drowOnMap = function(point) {
-                console.log("### ", point);
+            // Add a marker to the map and push to the array.
+            function addMarker(point) {
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(point.x, point.y),
-                    title: "H1!"
+                    map: map
                 });
-                marker.setMap(map);
+                marker.id = point.userId;
+                markers.push(marker);
+            }
+            // Sets the map on all markers in the array.
+            function setAllMap(map) {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                }
+            }
+            // Shows any markers currently in the array.
+            function showMarkers() {
+                setAllMap(map);
+            }
+            // Deletes all markers in the array by removing references to them.
+            function deleteMarkers() {
+                setAllMap(null);
+                markers = [];
+            }
+
+            event.drawOnMap = function(points) {
+                console.log("get coordinates ", points);
+                deleteMarkers();
+                points.forEach(function(point) {
+                    addMarker(point);
+                });
+                showMarkers();
             }
 
             var drawingManager = new google.maps.drawing.DrawingManager({

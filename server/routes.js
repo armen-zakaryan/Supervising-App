@@ -2,15 +2,15 @@ var jwt = require('jwt-simple');
 var moment = require('moment');
 var userService = require('./userService.js');
 
-
 //Secret Key for Token
 var secret = 'MySinglePageApp';
-//starting recursive cleanup
-userService.Coordinates.deleteOldData();
 
 //Incapsulating in function
 function routes(app) {
     var baseUrl = "/rest/v1/";
+    //Keep the list of active Users
+    var activeUsers = {};
+    var coordinates = {};
 
     app.get('/', function(req, res) {
         res.render("index");
@@ -36,6 +36,9 @@ function routes(app) {
         userService.User.find(req.headers)
             .then(function(user) {
                     if (user) {
+                        //add User to ctive user List
+                        activeUsers[user.id] = user;
+                        console.log('Login user ', user.id);
                         var expires = moment().add('seconds', 360).valueOf();
                         var token = jwt.encode({
                             iss: user.userID,
@@ -56,8 +59,6 @@ function routes(app) {
                 });
     });
 
-
-
     //geting Username validation requests Login
     app.get(baseUrl + 'users/:username', function(req, res) {
         userService.User.checkUsernameExistance(req.params.username)
@@ -70,6 +71,12 @@ function routes(app) {
                 function(error) {
                     console.log(error)
                 });
+    });
+    //Logout  deleting usr from  active user list
+    app.put(baseUrl + 'users/:userid', function(req, res) {
+        activeUsers[req.params.userid] && delete activeUsers[req.params.userid];
+        console.log('LogOut user ', req.params.userid);
+        res.send();
     });
     // New User Acount
     app.post(baseUrl + 'users', function(req, res) {
@@ -117,26 +124,6 @@ function routes(app) {
         });
     });
 
-    //setCoordinates
-    app.post(baseUrl + 'users/:id/coordinates', function(req, res) {
-        userService.Coordinates.setCoordinates(req.body);
-        res.send();
-    });
-
-    //Get Cordinates of Online users in the group
-    app.get(baseUrl + 'coordinates/:memberId', function(req, res) {
-        userService.Coordinates.getCoordinate(req.params.memberId)
-            .then(function(result) {
-                    if (result) {
-                        res.json(result);
-                        res.end();
-                    } else res.status(404).send('Not found');
-                },
-                function(error) {
-                    console.log(error)
-                });
-    });
-
     //Get User group list
     app.get(baseUrl + 'user/:userId/groups', function(req, res) {
         userService.User.getUserGroups(req.params.userId)
@@ -156,11 +143,28 @@ function routes(app) {
             });
     });
 
+    //set Selected Group Members
+    app.put(baseUrl + 'users/:id/group', function(req, res) {
+        console.log('User ' + req.params.id + ' has selected users ' + req.body + ' for supervising');
+        activeUsers[req.params.id].currentSupervisedGroupMembers = req.body;
+        res.send();
+    });
 
+    //set Coordinates and get if group has been specified by that user
+    //in other words if the user enter the mode of superviser then it will get the coordinates of  the given group members
+    app.post(baseUrl + 'users/:id/coordinates', function(req, res) {
+        coordinates[req.params.id] = req.body;
+        var user = activeUsers[req.params.id];
+        if (user && user.currentSupervisedGroupMembers) {
+            var arr = [];
+            user.currentSupervisedGroupMembers.forEach(function(element) {
+                activeUsers[element] && coordinates[element] && arr.push(coordinates[element]);
+            });
+        }
+        res.send(arr);
+    });
 
 }
-
-
 
 
 module.exports.routes = routes;

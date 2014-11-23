@@ -28,16 +28,7 @@ require(['config'], function() {
             routie('users/?:userID', function() {
                 changeHash();
             });
-            routie('drivers/?:driverID', function() {
-                changeHash();
-            });
-            routie('admin/?:driverID', function() {
-                changeHash();
-            });
             routie('users/?:userID/events', function() {
-                changeHash();
-            });
-            routie('users/?:userID/events/?:eventID', function() {
                 changeHash();
             });
             routie('profile', function() {
