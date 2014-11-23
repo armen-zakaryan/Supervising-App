@@ -32,6 +32,8 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
                 rest_api.sendCoordinates({
                     x: position.coords.latitude,
                     y: position.coords.longitude
+                }, function(groupMembersCoordinates) {
+                    user.onCoordinatesGet(groupMembersCoordinates);
                 });
             });
         }

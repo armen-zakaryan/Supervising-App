@@ -7,6 +7,7 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
         type: ko.observable(),
         userGroups: ko.observableArray(),
         groupMembers: ko.observableArray(),
+        groupMembersCoordinates: ko.observable(),
         selectedUser: ko.observable(), //Not being used yet
         selectedArea: ko.observableArray()
     }
@@ -41,13 +42,18 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
         });
     }
 
-    var active = true;
+    var active = false;
     //Get coordinates of onlinr users
     event.getOnlineGroupMembersCoordinates = function() {
-        //active = true;
-        getCoordinates();
-    }
+        active = true;
+        event.drowOnMap(event.groupMembersCoordinates);
+    };
 
+    event.groupMembersCoordinates.subscribe(function() {
+        active && event.drowOnMap(event.groupMembersCoordinates);
+    })
+
+    /*
     function getCoordinates() {
         event.groupMembers().forEach(function(user) {
             rest_api.getOnlineGroupMembersCoordinates(user.userId).then(function(Points) {
@@ -60,6 +66,7 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
             }, 10000);
         }
     }
+    */
 
     //Load Google Map for Creting New Event
     event.loadMap = function(element) {

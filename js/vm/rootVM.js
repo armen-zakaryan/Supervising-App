@@ -13,11 +13,16 @@ define(['ko', 'profile', 'session', 'user', 'admin', 'event', 'group'], function
             },
         };
         mySwitch[session.option()](result);
-    }
+    };
+
+    user.onCoordinatesGet = function(coordinates) {
+        event.groupMembersCoordinates(coordinates);
+    };
+
     profile.onCreateProfile = function(value) {
         session.option(value);
         window.location.hash = 'session';
-    }
+    };
 
 
     return {
