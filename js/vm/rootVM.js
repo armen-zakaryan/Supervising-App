@@ -24,6 +24,11 @@ define(['ko', 'profile', 'session', 'user', 'admin', 'event', 'group'], function
         window.location.hash = 'session';
     };
 
+    window.onbeforeunload = function() {
+        session.loguot();
+        console.log("iii");
+    };
+
 
     return {
         path: ko.observable(''),

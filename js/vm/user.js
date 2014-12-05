@@ -16,6 +16,13 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
         sendCoordinates();
     }
 
+    //Start Test
+    var shift = 0.001;
+
+
+
+    //End Test
+
     sendCoordinates = function() {
         //console.log("Coordinates are not being send ");
         setTimeout(function() {
