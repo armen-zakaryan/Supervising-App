@@ -1,3 +1,4 @@
+'use strict'
 define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
 
     var user = {
@@ -5,7 +6,13 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
         firstName: ko.observable(),
         lastName: ko.observable(),
         photo: ko.observable(),
-        eventOptions: ko.observable(' Actions ')
+        eventOptions: ko.observable(' Actions '),
+        testSwitchOptions: ko.observable('General')
+    }
+
+    var testSwitch = {
+        General: getMyCoordinates,
+        Test: getMyCoordinatesTest
     }
 
     user.url = ko.computed(function() {
@@ -14,26 +21,18 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
 
     user.sendData = function() {
         sendCoordinates();
-    }
+    };
 
-    //Start Test
-    var shift = 0.001;
-
-
-
-    //End Test
-
-    sendCoordinates = function() {
+    function sendCoordinates() {
         //console.log("Coordinates are not being send ");
         setTimeout(function() {
             console.log("sending...");
-            getMyCoordinates();
+            user.testSwitchOptions() && testSwitch[user.testSwitchOptions()]();
             sendCoordinates();
         }, 3000);
-
     }
 
-    getMyCoordinates = function() {
+    function getMyCoordinates() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 rest_api.sendCoordinates({
@@ -46,7 +45,25 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
         }
     }
 
+    //Start Test
+    var shift = 0.001;
 
+    function getMyCoordinatesTest() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                shift += 0.001;
+                var x = position.coords.latitude + shift;
+                var y = position.coords.longitude + shift;
+                rest_api.sendCoordinates({
+                    x: x,
+                    y: y
+                }).then(function(groupMembersCoordinates) {
+                    user.onCoordinatesGet(groupMembersCoordinates);
+                });
+            });
+        }
+    }
+    //End Test
 
 
     return user;

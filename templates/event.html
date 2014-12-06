@@ -10,9 +10,9 @@
         <div class="tab-pane active" id="tab1">
           <h4><span class="glyphicon glyphicon-map-marker"></span> Our Location</h4>
                 
-
+              <div id="mapDefaultPlace">
                 <div id="map-canvas" data-bind="customShowMap : true" ></div>
-
+              </div>  
 
         </div><!-- end tab-pane -->
 
@@ -34,7 +34,13 @@
 
   <div id='addEvent' class="col-sm-4">
     <div class="row ">
-      <legend><span> <h4> #### </h4>  </span></legend>
+      <div class="row full-screen">
+        <div class="pull-right" data-bind="click:setFullScrean">
+          <button class="btn" aria-label="Left Align">
+            <span class="glyphicon glyphicon-fullscreen full-screen-span" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
       
       <!-- Event Type option-->
       <div class="container">
@@ -53,8 +59,29 @@
                 <select data-bind="options:groupMembers, optionsText: 'username', optionsValue: 'userId', value:selectedUser" class="form-control input-small"> 
                 </select>
               </div>
+              </br>
+              <div class="allow-drow">
+                <button  class="btn btn-danger btn-small "  data-bind="click:startDrawing"> Enable Drawing </button>
+              </div>
               <hr>
-              <button  class="btn btn-success " data-bind="visible:allowSupervise(), click:startSupervise "> Start Supervise </button>          
+
+<div data-bind="visible:allowSupervise()">
+  <button  class="btn btn-success " data-keyboard="false" data-bind="click:startSupervise"> Start Supervise </button>
+
+  <!--div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" data-bind="click:minimizeWindow"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+          <h4 class="modal-title" id="exampleModalLabel"> Supervising Window </h4>
+          <div id="mapModalPlace"></div>
+        </div>
+      </div>
+    </div>
+  </div-->
+
+</div>
+
               <!-- /ko -->
             </div>
           </div>

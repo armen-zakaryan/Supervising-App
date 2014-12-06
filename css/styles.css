@@ -16,9 +16,26 @@ html, body
 }
 #navbarLogin{
 	margin-top: 6px;
-
 }
 
+.activeTestOptions {
+	background: #ccc;
+	color:red !important;
+}
+
+.allow-drow {
+	text-align: center;
+	button {
+		margin: 0 auto;
+		height: 30px;
+		padding: 0px 20px;
+	}
+}
+
+.modal-lg {
+	margin: 0 5%;
+	width: 90%;
+}
 
 #body{
 	padding-top: 100px;
@@ -89,7 +106,14 @@ html, body
 #usercollapsa > li > a{color: white;}
 #usercollapsa > li > a:hover{color: black;}
 #googleMap{width:100%;height:350px;border:1px dotted green;}
-#map-canvas{height:350px;border:1px dotted green;}
+#mapDefaultPlace > div{height:350px;border:1px dotted green;}
+
+.full-screen {margin: 0px !important;}
+.full-screen > div > button {background: #fff !important; border: 1px dotted green; padding: 5px 10px !important; height: 28px !important; border-radius: 5px;}
+.full-screen > div > button:hover {color: red !important;}
+
+//#mapModalPlace > #map-canvas{width: 90%; height: 500px;}
+
 
 
 /* Creating new Account */

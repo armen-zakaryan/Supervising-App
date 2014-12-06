@@ -1,5 +1,8 @@
 define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, ko, rest_api, classUserEvent) {
-
+    var mapSizieas = {
+        w: '',
+        h: ''
+    }
 
     var event = {
         location: ko.observable(),
@@ -42,12 +45,46 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
         });
     }
 
+    event.setFullScrean = function() {
+        var $element = $('#map-canvas');
+        mapSizieas.w = $element.width();
+        mapSizieas.h = $element.height();
+
+        var element = document.getElementById('map-canvas');
+
+        element.style.width = window.innerWidth + "px";
+        element.style.height = window.innerHeight + "px";
+        if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+            element.webkitRequestFullScreen();
+        }
+    }
+
+
     var active = false;
     //set supervising group ID
     event.startSupervise = function() {
         active = true;
         rest_api.startSupervise(event.groupMembers());
+
+        //setIntoModal()
+        //$('#map-canvas').height(h).appendTo('#mapModalPlace');
+        //$('#map-canvas').appendTo('#mapModalPlace');
     };
+
+    //Detecting full screan exit
+    $('body').bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+        if (document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen) {} else {
+            var $element = $('#map-canvas');
+            $element.width(mapSizieas.w);
+            $element.height(mapSizieas.h);
+        }
+    });
+
+    event.minimizeWindow = function() {
+        $('#map-canvas').appendTo('#mapDefaultPlace');
+    }
 
     event.groupMembersCoordinates.subscribe(function() {
         active && event.drawOnMap(event.groupMembersCoordinates());
@@ -137,27 +174,32 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
                     zIndex: 1
                 }
             });
-            drawingManager.setMap(map);
-
             directionsDisplay.setMap(map);
 
+            event.startDrawing = function() {
+                drawingManager.setMap(map);
+            };
+
+            event.stopDrawing = function() {
+                drawingManager.setMap(null);
+            };
 
             // Map Event handler 
             google.maps.event.addListener(map, 'click', function(e) {
                 console.log("clicked ", e.latLng);
                 //placeMarker(e.latLng);
             });
-
             google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygon) {
                 event.selectedArea.push(polygon);
+                event.stopDrawing();
             });
-
             google.maps.event.addListener(drawingManager, 'rectanglecomplete', function(rectangle) {
                 event.selectedArea.push(rectangle);
+                //event.stopDrawing();
             });
-
             google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
                 event.selectedArea.push(circle);
+                event.stopDrawing();
             });
 
         });
@@ -173,3 +215,44 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
 
     return event;
 });
+
+
+
+
+
+
+
+
+/*
+var rectangles = [];
+var coordinates = [];
+var map;
+var drawingTool = new google.maps.drawing.DrawingManager();
+
+function initiateRectangle() {
+    //Allowing to draw shapes in the Client Side
+    if (drawingTool.getMap()) {
+        drawingTool.setMap(null); // Used to disable the Rectangle tool
+    }
+    drawingTool.setOptions({
+        drawingMode: google.maps.drawing.OverlayType.RECTANGLE,
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [google.maps.drawing.OverlayType.RECTANGLE]
+        }
+    });
+    //Loading the drawn shape in the Map.
+    drawingTool.setMap(map);
+    google.maps.event.addListener(drawingTool, 'overlaycomplete', function(event) {
+        if (event.type == google.maps.drawing.OverlayType.RECTANGLE) {
+            drawRectangle(event.overlay.getBounds().getNorthEast().lat(), event.overlay.getBounds().getNorthEast().lng(), event.overlay.getBounds().getSouthWest().lat(), event.overlay.getBounds().getSouthWest().lng());
+        }
+    });
+}
+
+
+function stopDrawing() {
+    drawingTool.setMap(null);
+}
+*/
