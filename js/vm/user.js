@@ -9,10 +9,18 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
         eventOptions: ko.observable(' Actions '),
         testSwitchOptions: ko.observable('General')
     }
-
+    var userData;
     var testSwitch = {
         General: getMyCoordinates,
-        Test: getMyCoordinatesTest
+        Test: getMyCoordinatesTest,
+        up: getMyCoordinatesTest,
+        down: getMyCoordinatesTest,
+        right: getMyCoordinatesTest,
+        left: getMyCoordinatesTest
+    }
+
+    user.setUserData = function(userD) {
+        userData = userD;
     }
 
     user.url = ko.computed(function() {
@@ -27,7 +35,7 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
         //console.log("Coordinates are not being send ");
         setTimeout(function() {
             console.log("sending...");
-            user.testSwitchOptions() && testSwitch[user.testSwitchOptions()]();
+            user.testSwitchOptions() && testSwitch[user.testSwitchOptions()](user.testSwitchOptions());
             sendCoordinates();
         }, 3000);
     }
@@ -37,7 +45,8 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 rest_api.sendCoordinates({
                     x: position.coords.latitude,
-                    y: position.coords.longitude
+                    y: position.coords.longitude,
+                    username: userData.username
                 }).then(function(groupMembersCoordinates) {
                     user.onCoordinatesGet(groupMembersCoordinates);
                 });
@@ -46,21 +55,48 @@ define(['jquery', 'ko', 'rest_api', 'bootstrap'], function($, ko, rest_api) {
     }
 
     //Start Test
-    var shift = 0.001;
+    var shift_x = 0.001;
+    var shift_y = 0.001;
 
-    function getMyCoordinatesTest() {
+    function getMyCoordinatesTest(direction) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                shift += 0.001;
-                var x = position.coords.latitude + shift;
-                var y = position.coords.longitude + shift;
-                rest_api.sendCoordinates({
-                    x: x,
-                    y: y
-                }).then(function(groupMembersCoordinates) {
+                var data = makeDirection(position, direction);
+
+                rest_api.sendCoordinates(data).then(function(groupMembersCoordinates) {
                     user.onCoordinatesGet(groupMembersCoordinates);
                 });
             });
+        }
+    }
+
+    function makeDirection(position, direction) {
+        if (direction === 'Test') {
+            shift_x += 0.001;
+            shift_y += 0.001;
+            var x = position.coords.latitude + shift_x;
+            var y = position.coords.longitude + shift_y;
+        } else if (direction === 'up') {
+            shift_y += 0.001;
+            var x = position.coords.latitude + shift_x;
+            var y = position.coords.longitude + shift_y;
+        } else if (direction === 'down') {
+            shift_y -= 0.001;
+            var x = position.coords.latitude + shift_x;
+            var y = position.coords.longitude + shift_y;
+        } else if (direction === 'right') {
+            shift_x += 0.001;
+            var x = position.coords.latitude + shift_x;
+            var y = position.coords.longitude + shift_y;
+        } else if (direction === 'left') {
+            shift_x -= 0.001;
+            var x = position.coords.latitude + shift_x;
+            var y = position.coords.longitude + shift_y;
+        }
+        return {
+            x: x,
+            y: y,
+            username: userData.username
         }
     }
     //End Test

@@ -10,6 +10,8 @@ define(['ko', 'profile', 'session', 'user', 'admin', 'event', 'group'], function
                 user.id(result.user.id);
                 window.location.hash = 'users/' + result.user.id;
                 user.sendData();
+                events.setUserData(result.user);
+                user.setUserData(result.user);
             },
         };
         mySwitch[session.option()](result);
@@ -26,7 +28,6 @@ define(['ko', 'profile', 'session', 'user', 'admin', 'event', 'group'], function
 
     window.onbeforeunload = function() {
         session.loguot();
-        console.log("iii");
     };
 
 

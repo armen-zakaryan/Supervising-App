@@ -28,8 +28,21 @@
                             <a  data-bind="click:function(){ testSwitchOptions('General');return true;},css:{activeTestOptions:testSwitchOptions() == 'General'}" > General Mode  </a>
                         </li>                                                           
                         <li>
-                            <a  data-bind="click:function(){ testSwitchOptions('Test');return true;},css:{activeTestOptions:testSwitchOptions() == 'Test'}"> Test Mode </a>
+                            <a  data-bind="click:function(){ testSwitchOptions('Test');return true;},css:{activeTestOptions:testSwitchOptions() == 'Test'}"><span class="glyphicon glyphicon-fire"></span></a>
                         </li>
+                        <li>
+                            <a  data-bind="click:function(){ testSwitchOptions('up');return true;},css:{activeTestOptions:testSwitchOptions() == 'up'}"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                        </li>
+                        <li>
+                            <a  data-bind="click:function(){ testSwitchOptions('down');return true;},css:{activeTestOptions:testSwitchOptions() == 'down'}"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                        </li>
+                        <li>
+                            <a  data-bind="click:function(){ testSwitchOptions('right');return true;},css:{activeTestOptions:testSwitchOptions() == 'right'}"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                        </li>
+                        <li>
+                            <a  data-bind="click:function(){ testSwitchOptions('left');return true;},css:{activeTestOptions:testSwitchOptions() == 'left'}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                        </li>
+
                     </ul><!-- end dropdown-menu -->
                 </li>
             </ul>

@@ -3,7 +3,7 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
         w: '',
         h: ''
     }
-
+    var userData;
     var event = {
         location: ko.observable(),
         eventName: ko.observable(),
@@ -13,6 +13,10 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
         groupMembersCoordinates: ko.observable(),
         selectedUser: ko.observable(), //Not being used yet
         selectedArea: ko.observableArray()
+    }
+
+    event.setUserData = function(userData) {
+        userData = userData;
     }
 
     event.allowSupervise = function() {
@@ -107,7 +111,7 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
             var directionsDisplay = new google.maps.DirectionsRenderer();
             var map = new google.maps.Map(element, {
                 center: new google.maps.LatLng(40.18656184784909, 44.57176923751831),
-                zoom: 6,
+                zoom: 12,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 navigationControl: true,
                 navigationControlOptions: {
@@ -115,12 +119,60 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
                 }
             });
 
+
+            //checks whether point is inside the poligon or not
+            function isPointInsidePoligon(point) {
+                var myPosition = new google.maps.LatLng(point.x, point.y);
+                var figure = event.selectedArea()[0].value;
+                var key = event.selectedArea()[0].key;
+                if (key === 'poly') {
+                    return google.maps.geometry[key].containsLocation(myPosition, event.selectedArea()[0].value);
+                }
+                return figure.getBounds().contains(myPosition);
+            }
+
+            //make a Voice
+            function makeVoice(user) {
+                var u = new SpeechSynthesisUtterance();
+                u.text = 'Warning, warning ' + user + ' is outside of bounds';
+                u.lang = 'en-US';
+                u.rate = 0.75;
+                u.pitch = 2.0;
+                u.volume = 1;
+                speechSynthesis.speak(u);
+            }
+
+            function makeMarker(point, imageUrl, animate) {
+                var animate = animate && google.maps.Animation.BOUNCE;
+                var image = imageUrl && {
+                    url: imageUrl,
+                    size: new google.maps.Size(55, 48),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(0, 32)
+                };
+                var shape = {
+                    coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                    type: 'poly'
+                };
+
+                return new google.maps.Marker({
+                    position: new google.maps.LatLng(point.x, point.y),
+                    map: map,
+                    icon: image,
+                    shape: shape,
+                    animation: animate
+                });
+            }
+
             // Add a marker to the map and push to the array.
             function addMarker(point) {
-                var marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(point.x, point.y),
-                    map: map
-                });
+                var marker;
+                if (!isPointInsidePoligon(point)) {
+                    makeVoice(point.username);
+                    marker = makeMarker(point, 'img/warn.png', true);
+                } else {
+                    marker = makeMarker(point);
+                }
                 marker.id = point.userId;
                 markers.push(marker);
             }
@@ -155,21 +207,16 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
                 drawingControlOptions: {
                     position: google.maps.ControlPosition.TOP_CENTER,
                     drawingModes: [
-                        google.maps.drawing.OverlayType.MARKER,
                         google.maps.drawing.OverlayType.CIRCLE,
                         google.maps.drawing.OverlayType.POLYGON,
-                        google.maps.drawing.OverlayType.POLYLINE,
                         google.maps.drawing.OverlayType.RECTANGLE
                     ]
                 },
-                markerOptions: {
-                    icon: 'img/logo.png'
-                },
                 circleOptions: {
-                    fillColor: '#ffff00',
-                    fillOpacity: 1,
-                    strokeWeight: 5,
-                    clickable: false,
+                    fillColor: '#000',
+                    fillOpacity: 0.3,
+                    strokeWeight: 1,
+                    clickable: true,
                     editable: true,
                     zIndex: 1
                 }
@@ -190,15 +237,24 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
                 //placeMarker(e.latLng);
             });
             google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygon) {
-                event.selectedArea.push(polygon);
+                event.selectedArea.push({
+                    key: 'poly',
+                    value: polygon
+                });
                 event.stopDrawing();
             });
             google.maps.event.addListener(drawingManager, 'rectanglecomplete', function(rectangle) {
-                event.selectedArea.push(rectangle);
-                //event.stopDrawing();
+                event.selectedArea.push({
+                    key: 'rectangle',
+                    value: rectangle
+                });
+                event.stopDrawing();
             });
             google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
-                event.selectedArea.push(circle);
+                event.selectedArea.push({
+                    key: 'circle',
+                    value: circle
+                });
                 event.stopDrawing();
             });
 
@@ -215,44 +271,3 @@ define(['jquery', 'ko', 'rest_api', 'classUserEvent', 'bootstrap'], function($, 
 
     return event;
 });
-
-
-
-
-
-
-
-
-/*
-var rectangles = [];
-var coordinates = [];
-var map;
-var drawingTool = new google.maps.drawing.DrawingManager();
-
-function initiateRectangle() {
-    //Allowing to draw shapes in the Client Side
-    if (drawingTool.getMap()) {
-        drawingTool.setMap(null); // Used to disable the Rectangle tool
-    }
-    drawingTool.setOptions({
-        drawingMode: google.maps.drawing.OverlayType.RECTANGLE,
-        drawingControl: true,
-        drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: [google.maps.drawing.OverlayType.RECTANGLE]
-        }
-    });
-    //Loading the drawn shape in the Map.
-    drawingTool.setMap(map);
-    google.maps.event.addListener(drawingTool, 'overlaycomplete', function(event) {
-        if (event.type == google.maps.drawing.OverlayType.RECTANGLE) {
-            drawRectangle(event.overlay.getBounds().getNorthEast().lat(), event.overlay.getBounds().getNorthEast().lng(), event.overlay.getBounds().getSouthWest().lat(), event.overlay.getBounds().getSouthWest().lng());
-        }
-    });
-}
-
-
-function stopDrawing() {
-    drawingTool.setMap(null);
-}
-*/
